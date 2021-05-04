@@ -50,6 +50,17 @@ exports.getConditionVehicle = (condition) => {
   });
 };
 
+exports.getCategoryVehicle = () => {
+  return new Promise((resolve, reject) => {
+    db.query(`SELECT category_detail.* FROM category_detail`, (err, result, field) => {
+      if (err) {
+        return reject(new Error(err));
+      }
+      return resolve(result);
+    });
+  });
+};
+
 exports.updateVehicle = (id, data) => {
   return new Promise((resolve, reject) => {
     const keys = Object.keys(data);

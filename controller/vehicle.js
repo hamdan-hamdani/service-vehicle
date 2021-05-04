@@ -33,6 +33,10 @@ exports.getConditionVehicle = async (req, res) => {
     const order = req.query.order || "ASC";
     const filter = req.query.filter || "";
 
+    console.log(filter);
+    console.log(req.query);
+    console.log("filter");
+
     const countVehicle = await vehicleModel.countVehicle({ search, filter });
     const totalItem = countVehicle[0].total;
     const totalPage = Math.ceil(totalItem / limit);
@@ -68,6 +72,28 @@ exports.getConditionVehicle = async (req, res) => {
         message: "Page not found",
       });
     }
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: error.message || "Server error",
+    });
+  }
+};
+
+exports.getCategoryVehicle = async (req, res) => {
+  try {
+    const vehicleCategory = await vehicleModel.getCategoryVehicle();
+    if (vehicleCategory.length == 0) {
+      return res.json({
+        success: true,
+        message: "Sorry data not found",
+      });
+    }
+    return res.json({
+      success: true,
+      message: "Success get all vehicle",
+      result: vehicleCategory,
+    });
   } catch (error) {
     return res.status(400).json({
       success: false,
